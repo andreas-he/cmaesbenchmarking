@@ -2,21 +2,51 @@
 % Please edit documentation in R/stoppingConditions.R
 \name{stopOnOCD}
 \alias{stopOnOCD}
-\title{Stopping condition: Online Convergence Detection.}
+\title{Stopping Condition: Online Convergence Detection.}
 \usage{
 stopOnOCD(varLimit, nPreGen, maxGen = NULL, fitnessValue = TRUE,
   dispersion = FALSE, evolutionPath = FALSE)
 }
 \arguments{
-\item{max.iter}{[integer(1)]\cr
-Maximal number of iterations.
-Default is \code{100}.}
+\item{varLimit}{\code{cma_stopping_condition} specifies the variance limit passed to the chi-squared variance test. The null hypotheses of this test
+is: var(PI) >= VarLimit}
+
+\item{nPreGen}{The number \code{nPreGen} specifies the number of preceding generations for which the performance indicator values should be computed.
+The statistical tests consider exactly \code{nPreGen} generation in their testing procedure.}
+
+\item{maxGen}{The number of iteration that should be spent at the maximum. \code{maGen} is the upper iteration limit if neither the t-test nor the
+chi-squared variance test terminate the optimization. Default is \code{maGen = NULL}.}
+
+\item{fitnessValue}{The logical parameter \code{fitnessValue} indicates if the best fitness value of a population should be used as a performance indicator or not.
+Default is \code{fitnessValue = TRUE}.}
+
+\item{dispersion}{The logical parameter \code{dispersion} indicates if the dispersion of the population should be used as a performance indicator or not.
+Default is \code{dispersion = FALSE}.}
+
+\item{evolutionPath}{The logical parameter \code{evolutionPath} indicates if the evolutionPath or the step size, i.e. a cmaes parameter that controls 
+the evolution of the population in the objective space, should be used as a performance indicator or not.
+Default is \code{evolutionPath = FALSE}.}
 }
 \value{
-[\code{cma_stopping_condition}]
+\code{stopOnOCD} returns TRUE if the optimizer should terminate the execution or FALSE if not.
 }
 \description{
-StopOnOCD.
+Online Convergence Detection (OCD) is a technique for detecting convergence of an algorithm based on statistical testing [1].
+A two sided t-test as well as a chi-squared variance test are performed and serve as stopping criterion if significant.
+}
+\details{
+Basically, two different analyses are performed for detecting convergence.
+A statistical chi-squared variance test is performed which checks whether the variance of a set of performance indicator values decreases 
+below a predefined variance limit significantly. Additionally, a two sided t-test is performed in order to check if there is no significant 
+linear trend of the performance indicator values. The significance level for both tests is fixed with alpha = 0.05. 
+The algorithm execution is terminated if one of these conditions holds for the last i and second last (i - 1) generation. In this implementation,
+the performance indicator of interest are: \code{fitnessValue, dispersion, evolutionPath}. A performance indicator value corresponds to the difference
+between e.g. the best fitness value of the current generation and that of the last generation. Depending on the number \code{nPreGen}, a vector
+\code{PI} of length \code{nPreGen} is computed internally, that stores those differences for each active performance indicator.
+}
+\references{
+[1] Wagner and Trautmann (2009). OCD: Online Convergence Detection for Evolutionary Multi-Objective Algorithms Based on Statistical Testing.
+In Lecture Notes in Computer Science, pp. 198-215.
 }
 \seealso{
 Other stopping.conditions: \code{\link{stopOnCondCov}},
