@@ -9,7 +9,7 @@ Description: Comprehensive benchmarking functionality for comparing the default 
 License: No license
 Depends:
     snow,
-    parallel::detectCores(),
+    parallel,
     BBmisc,
     smoof
 ByteCompile: yes
