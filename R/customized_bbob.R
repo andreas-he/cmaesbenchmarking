@@ -31,9 +31,6 @@
 #' writes the results in a number of log files to this folder. The folder's name includes a time stamp as well as the specified
 #' data directory (e.g. 2015-12-31_CMAES_default_stopping_conditions). The caption of the log files in that folder is a sequence of the defined
 #' \code{algorithm.id, function_ids} and \code{dimensions} (e.g. CMAES_output_1_2.txt).
-#' @references
-#' TODO
-#' @keywords optimize
 #' @param optimizer 
 #'   The first argument passed to customized_bbob is an optimization wrapper, i.e. the particular optimizer under test. 
 #'   The optimizer has to adhere to the following function signature:
@@ -99,7 +96,7 @@
 #' @return bbob_custom does not return anything but writes the results of the experiment to log files, to be
 #' processed with \code{\link{readOutput}}
 #' @examples
-#' suppressWarnings(bbob_custom_parallel(optimizer = optimizerCMAES, algorithm_id = "CMAES_OCD", 
+#' suppressWarnings(bbob_custom_parallel(optimizer = cmaesbenchmarking::optimizerCMAES, algorithm_id = "CMAES_OCD", 
 #' data_directory = "CMAES_OCD_no_restarts", 
 #' dimensions = c(2, 5, 10, 20), instances = 1:15, function_ids = 1:24, maxit = NULL, 
 #' stopFitness = 1e-08, maxFE = 100000, max_restarts = 0, 

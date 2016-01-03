@@ -103,7 +103,7 @@ data directory (e.g. 2015-12-31_CMAES_default_stopping_conditions). The caption 
 \code{algorithm.id, function_ids} and \code{dimensions} (e.g. CMAES_output_1_2.txt).
 }
 \examples{
-suppressWarnings(bbob_custom_parallel(optimizer = optimizerCMAES, algorithm_id = "CMAES_OCD", 
+suppressWarnings(bbob_custom_parallel(optimizer = cmaesbenchmarking::optimizerCMAES, algorithm_id = "CMAES_OCD", 
 data_directory = "CMAES_OCD_no_restarts", 
 dimensions = c(2, 5, 10, 20), instances = 1:15, function_ids = 1:24, maxit = NULL, 
 stopFitness = 1e-08, maxFE = 100000, max_restarts = 0, 
@@ -111,8 +111,4 @@ OCD = TRUE, varLimit = 0.0001, nPreGen = 100, fitnessValue = TRUE,
 dispersion = FALSE,  evolutionPath = FALSE, restart_multiplier = 2, 
 restart_triggers = "OCD"))
 }
-\references{
-TODO
-}
-\keyword{optimize}
 
