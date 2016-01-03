@@ -1,10 +1,16 @@
 Package: cmaesbenchmarking
 Type: Package
-Title: What the package does (short line)
+Title: Benchmarking of cmaes Stopping Conditions
 Version: 1.0
-Date: 2016-01-03
-Author: Who wrote it
-Maintainer: Who to complain to <yourfault@somewhere.net>
-Description: More about what it does (maybe more than one line)
-License: What license is it under?
+Date: 2016-01-01
+Author: Marcus Cramer and Andreas Hermann
+Maintainer: Andreas Hermann <a_herm14@uni-muenster.de>
+Description: Comprehensive benchmarking functionality for comparing the default internal stopping conditions of cma-es (covariance matrix adaption - evolution strategy) with online convergence detection (OCD), a technique originally designed for detecting convergence of multi-objective evolutionary algorithms (cf. Trautmann and Wagner 2009). The package contains the customized benchmarking function bbob_custom. This function will run an experiment over all 24 noiseless functions of the BBOB testset for a predefined optimizer. There are four predefined optimizers that can be passed to bbob_custom: An optimizer for cma-es with active default stopping conditions, another optimizer for cma-es with inactive default stopping conditions, an optimizer that applies random search, and an optimizer for the genetic algorithm (GA). For parallelization, the corresponding benchmarking function bbob_custom_parallel can be applied. The results of these experiments can be read and interpreted by the functions readOutput, aggregateResults.
+License: No license
+Depends:
+    snow,
+    parallel::detectCores(),
+    BBmisc,
+    smoof
+ByteCompile: yes
 RoxygenNote: 5.0.1

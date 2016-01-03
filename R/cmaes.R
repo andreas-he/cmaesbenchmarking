@@ -120,6 +120,16 @@ cmaes_custom = function(
     stopf("There must be at least one stopping condition!")
   }
   assertList(stop.ons, min.len = 1L, types = "cma_stopping_condition")
+  if (!is.null(start.point)) {
+    assertNumeric(start.point, len = n, any.missing = FALSE)
+  } else {
+    if (!hasFiniteBoxConstraints(par.set)) {
+      stopf("No start point provided. Cannot generate one, because parameter set cannot sample with Inf bounds!")
+    }
+    start.point = unlist(sampleValue(par.set))
+  }
+  # set initial distribution mean
+  m = start.point
   
   # restart mechanism (IPOP-CMA-ES)
   restart.triggers = getCMAESParameter(control, "restart.triggers", character(0L))
@@ -177,18 +187,6 @@ cmaes_custom = function(
   do.terminate = FALSE
   restarts = -1
   for (run in 0:max.restarts) {
-    
-    if (!is.null(start.point)) {
-      assertNumeric(start.point, len = n, any.missing = FALSE)
-    } else {
-      if (!hasFiniteBoxConstraints(par.set)) {
-        stopf("No start point provided. Cannot generate one, because parameter set cannot sample with Inf bounds!")
-      }
-      start.point = unlist(sampleValue(par.set))
-    }
-    # set initial distribution mean
-    m = start.point
-    
     restarts = restarts + 1
     # population and offspring size
     if (run == 0) {
