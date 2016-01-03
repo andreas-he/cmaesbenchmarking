@@ -473,19 +473,19 @@ loadAllResultsParallel = function(usedFunctions, usedDimensions, path, algorithm
   pbar = makeProgressBar(min = 0, max = length(usedDimensions))
   pbar$set(0)
   nCores = detectCores()
-  cluster = makeCluster(nCores, type = "SOCK")
+  cluster = snow:::makeCluster(nCores, type = "SOCK")
   #export all environment functions
   ex = Filter(function(x) is.function(get(x, .GlobalEnv)), ls(.GlobalEnv))
   clusterExport(cluster, ex)
   for (i in 1:length(usedDimensions)) {
-    results = clusterApply(cl = cluster, x = usedFunctions, function(x) readOutput(
+    results = snow:::clusterApply(cl = cluster, x = usedFunctions, function(x) readOutput(
       paste(path, "/", algorithmName, "_output_", x, "_", usedDimensions[i], ".txt", sep = "")
     ))
     if (is.null(allResults)) allResults = results
     else allResults = c(allResults, results)
     pbar$set(i)
   }
-  stopCluster(cluster)
+  snow:::stopCluster(cluster)
   #no order results as they might be out of order due to parallel jobs
   sortedResults = NULL
   for (i in usedFunctions) {
