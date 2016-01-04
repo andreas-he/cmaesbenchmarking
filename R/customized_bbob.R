@@ -104,7 +104,7 @@
 #' dispersion = FALSE,  evolutionPath = FALSE, restart_multiplier = 2, 
 #' restart_triggers = "OCD"))
 #' @rdname bbo-benchmarking
-#' @importFrom BBmisc makeProgressBar
+#' @import BBmisc
 #' @export
 #only non-noisy functions
 bbob_custom = function(optimizer, algorithm_id, data_directory, dimensions = c(2, 3, 5, 10, 20, 40), 
@@ -421,7 +421,7 @@ optimizerGA = function(dimension, instance, function_id, maxit, maxFE, stopFitne
 }
 
 #' @rdname bbo-benchmarking
-#' @importFrom snow makeCluster clusterCall clusterExport clusterApply stopCluster
+#' @importFrom snow makeCluster clusterApply clusterCall stopCluster
 #' @importFrom parallel detectCores
 #' @import smoof
 #' @export

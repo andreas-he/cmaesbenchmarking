@@ -464,7 +464,7 @@ loadAllResults = function(usedFunctions, usedDimensions, path, algorithmName) {
 
 #' @rdname load_results
 #' @importFrom parallel detectCores
-#' @importFrom snow makeCluster clusterExport clusterApply stopCluster
+#' @importFrom snow makeCluster stopCluster clusterApply
 #' @export
 #loads all results that correspond to the naming conventions used by bbob_custom (parallel version)
 #gets more efficient the more different functions were used

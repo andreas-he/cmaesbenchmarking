@@ -10,9 +10,8 @@ License: No license
 Depends:
     BBmisc,
     smoof,
-    ggplot2
-Import:
-    snow,
+    ggplot2,
     parallel,
+    snow
 ByteCompile: yes
 RoxygenNote: 5.0.1
