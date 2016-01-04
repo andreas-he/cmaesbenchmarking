@@ -656,6 +656,7 @@ averageConvergence = function(allConvergence, includedFunctions, includedDimensi
 
 
 #checks whether all required logs for the R file output_analysis.R exist
+#' @export
 checkLogCompleteness = function(usedFunctions = 1:24, usedDimensions = c(2, 5, 10, 20), nInstances = 15) {
   checkSuccessful = TRUE
   #get all directories in current working directory

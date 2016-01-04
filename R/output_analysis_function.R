@@ -16,6 +16,7 @@
 #' compare the default stopping criterion of CMAES with OCD as a criterion.
 #' @import ggplot2
 #' @import BBmisc
+#' @export
 # no export as it is not recommended to use this function separately.
 createOutputImages = function(outputPath) {
   dir.create(outputPath, showWarnings = FALSE)
