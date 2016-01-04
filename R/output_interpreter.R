@@ -541,11 +541,14 @@ loadAllResultsParallel = function(usedFunctions, usedDimensions, path, algorithm
 #get convergence averaged per function (over all dimensions)
 getAggregatedConvergenceFunctions = function(results, nFunctions, nDimensions) {
   allConvergence = results$aggregatedAllConvergence
+  ticks = allConvergence[,1]
+  allConvergence = allConvergence[,-1]
   aggregatedConvergenceFunctions = matrix(nrow = nrow(allConvergence), ncol = nFunctions, data = 0)
   for (i in 1:nFunctions) {
     aggregatedConvergenceFunctions[,i] = apply(allConvergence[,((i-1) * nDimensions + 1):(i * nDimensions)], 
                                                1, mean)
   }
+  aggregatedConvergenceFunctions = cbind(ticks, aggregatedConvergenceFunctions)
   return(aggregatedConvergenceFunctions)
 }
 
@@ -624,15 +627,18 @@ getActiveFunctions = function(results) {
 
 #' @title Average Convergence per Function and/or per Dimension
 #' @description
-#' average convergence per function or per dimension or per a combination of both.
-#' @param allConvergence TODO
+#' \code{averageConvergence} returns a matrix with the convergence values per function or per dimension or per a combination of both.
+#' @param allConvergence
+#' matrix of convergence values
 #' @param nDimensions 
 #' the number of dimensions for which data exists and results should be computed (nDimensions is the total number of logged dimensions,
 #' i.e. \code{nDimensions} has to be a counting value, not the actual dimensionality)
-#' @param includedFunctions TODO
-#' @param includedDimensions TODO
+#' @param includedFunctions
+#' functions for which the average convergence should be computed
+#' @param includedDimensions
+#' dimensions for which the average convergence should be computed
 #' @return
-#' TODO
+#' \code{averageConvergence} returns the average of the convergence values for the functions and/or dimensions specified when calling the function.
 #average convergence per function or per dimension or per a combination of both
 #nDimensions is the total number of logged dimensions, not only of the included ones
 #included dimensions has to be a counting value, not the actual dimensionality
@@ -648,7 +654,7 @@ averageConvergence = function(allConvergence, includedFunctions, includedDimensi
   avgConvergence = cbind(allConvergence[,1], avgConvergence)
 }
 
-#' @export
+
 #checks whether all required logs for the R file output_analysis.R exist
 checkLogCompleteness = function(usedFunctions = 1:24, usedDimensions = c(2, 5, 10, 20), nInstances = 15) {
   checkSuccessful = TRUE
@@ -661,7 +667,9 @@ checkLogCompleteness = function(usedFunctions = 1:24, usedDimensions = c(2, 5, 1
                    "OCD_parametrization/OCD_RUN_0.01_100", "OCD_parametrization/OCD_RUN_0.01_1000", "OCD_parametrization/OCD_RUN_0.001_10",
                    "OCD_parametrization/OCD_RUN_0.001_100", "OCD_parametrization/OCD_RUN_0.001_1000", 
                    "OCD_parametrization/OCD_RUN_0.0001_10", "OCD_parametrization/OCD_RUN_0.0001_100", 
-                   "OCD_parametrization/OCD_RUN_0.0001_1000", "CMAES_default_with_restart2", 
+                   "OCD_parametrization/OCD_RUN_0.0001_1000", "OCD_parametrization/OCD_RUN_0.00001_10",
+                   "OCD_parametrization/OCD_RUN_0.00001_100","OCD_parametrization/OCD_RUN_0.00001_1000",
+                   "CMAES_default_with_restart2", 
                    "GA_default2", "OCD_evo_disp2", "GA_OCD2")
   pbar = makeProgressBar(min = 1, max = length(requiredDirs))
   for (i in 1:length(requiredDirs)) {
@@ -673,7 +681,7 @@ checkLogCompleteness = function(usedFunctions = 1:24, usedDimensions = c(2, 5, 1
   #list all names of the algorithms, the dimensions and functions to check for names
   algorithmNames = c("cmaes", "CMAES_OCD", "GA", "random search")
   #match algorithm names to dirs
-  dirAlgorithmMatch = c(1, 2, 1, 3, 3, 2, 2, 2, 2, 2, 2, 2, 4, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 3, 2, 3)
+  dirAlgorithmMatch = c(1, 2, 1, 3, 3, 2, 2, 2, 2, 2, 2, 2, 4, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 3, 2, 3)
   #check if all required .txt files exist
   for (i in 1:length(requiredDirs)) {
     pbar$set(i)
@@ -687,17 +695,6 @@ checkLogCompleteness = function(usedFunctions = 1:24, usedDimensions = c(2, 5, 1
           print(paste("Required file", currentFile, "in directory", currentDir, "is missing"))
           checkSuccessful = FALSE
         }
-        data = read.table(paste(currentDir, currentFile, sep = "/"), skip = 0, fill = TRUE, row.names = NULL)
-        #check whether nInstances are logged 
-        if (algorithmNames[dirAlgorithmMatch[i]] != "random search") {
-          if ((length(grep("\\<Instance\\>", data[,3]))+length(grep("\\<Instance\\>", data[,4]))) != nInstances) {
-            print(paste("Number of found instances deviates from specified number of distances in file", 
-                       currentFile, "in directory", 
-                       currentDir, ". Should be", nInstances, 
-                       "but is", length(grep("\\<Instance\\>", data[,3]))))
-            checkSuccessful = FALSE
-          }
-        }
       }
     }
   }
@@ -708,19 +705,36 @@ checkLogCompleteness = function(usedFunctions = 1:24, usedDimensions = c(2, 5, 1
   }
   else {
     currentFiles = dir("CMAES_restart_test")
-    if (length(grep("cmaes1_output_12_20", allDirs)) == 0) print("Required file cmaes1_output_12_20 in directory CMAES_restart_test is missing.")
-    if (length(grep("cmaes2_output_12_20", allDirs)) == 0) print("Required file cmaes2_output_12_20 in directory CMAES_restart_test is missing.")
-    if (length(grep("cmaes3_output_12_20", allDirs)) == 0) print("Required file cmaes3_output_12_20 in directory CMAES_restart_test is missing.")
-    if (length(grep("cmaes4_output_12_20", allDirs)) == 0) print("Required file cmaes4_output_12_20 in directory CMAES_restart_test is missing.")
-    if (length(grep("cmaes5_output_12_20", allDirs)) == 0) print("Required file cmaes5_output_12_20 in directory CMAES_restart_test is missing.")
-    if (length(grep("cmaes6_output_12_20", allDirs)) == 0) print("Required file cmaes6_output_12_20 in directory CMAES_restart_test is missing.")
+    if (length(grep("cmaes1_output_12_20.txt", currentFiles)) == 0) {
+      print("Required file cmaes1_output_12_20 in directory CMAES_restart_test is missing.")
+      checkSuccessful = FALSE
+    }
+    if (length(grep("cmaes2_output_12_20.txt", currentFiles)) == 0) {
+      print("Required file cmaes2_output_12_20 in directory CMAES_restart_test is missing.")
+      checkSuccessful = FALSE
+    }
+    if (length(grep("cmaes3_output_12_20.txt", currentFiles)) == 0) {
+      print("Required file cmaes3_output_12_20 in directory CMAES_restart_test is missing.")
+      checkSuccessful = FALSE
+    }
+    if (length(grep("cmaes4_output_12_20.txt", currentFiles)) == 0) {
+      print("Required file cmaes4_output_12_20 in directory CMAES_restart_test is missing.")
+      checkSuccessful = FALSE
+    }
+    if (length(grep("cmaes5_output_12_20.txt", currentFiles)) == 0) {
+      print("Required file cmaes5_output_12_20 in directory CMAES_restart_test is missing.")
+      checkSuccessful = FALSE
+    }
+    if (length(grep("cmaes6_output_12_20", currentFiles)) == 0) {
+      print("Required file cmaes6_output_12_20 in directory CMAES_restart_test is missing.")
+      checkSuccessful = FALSE
+    }
   }
   
   if(checkSuccessful) print("Syntax check revealed no anomalies. Proceed to generate output")
   return(checkSuccessful)
 }
 
-#' @export
 generateGraphs = function() {
   source("output_analysis.R")
 }

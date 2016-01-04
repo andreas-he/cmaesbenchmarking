@@ -11,6 +11,7 @@ Depends:
     snow,
     parallel,
     BBmisc,
-    smoof
+    smoof,
+    ggplot2 
 ByteCompile: yes
 RoxygenNote: 5.0.1

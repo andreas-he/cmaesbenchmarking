@@ -8,19 +8,19 @@ averageConvergence(allConvergence, includedFunctions, includedDimensions,
   nDimensions)
 }
 \arguments{
-\item{allConvergence}{TODO}
+\item{allConvergence}{matrix of convergence values}
 
-\item{includedFunctions}{TODO}
+\item{includedFunctions}{functions for which the average convergence should be computed}
 
-\item{includedDimensions}{TODO}
+\item{includedDimensions}{dimensions for which the average convergence should be computed}
 
 \item{nDimensions}{the number of dimensions for which data exists and results should be computed (nDimensions is the total number of logged dimensions,
 i.e. \code{nDimensions} has to be a counting value, not the actual dimensionality)}
 }
 \value{
-TODO
+\code{averageConvergence} returns the average of the convergence values for the functions and/or dimensions specified when calling the function.
 }
 \description{
-average convergence per function or per dimension or per a combination of both.
+\code{averageConvergence} returns a matrix with the convergence values per function or per dimension or per a combination of both.
 }
 
