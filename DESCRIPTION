@@ -8,10 +8,11 @@ Maintainer: Andreas Hermann <a_herm14@uni-muenster.de>
 Description: Comprehensive benchmarking functionality for comparing the default internal stopping conditions of cma-es (covariance matrix adaption - evolution strategy) with online convergence detection (OCD), a technique originally designed for detecting convergence of multi-objective evolutionary algorithms (cf. Trautmann and Wagner 2009). The package contains the customized benchmarking function bbob_custom. This function will run an experiment over all 24 noiseless functions of the BBOB testset for a predefined optimizer. There are four predefined optimizers that can be passed to bbob_custom: An optimizer for cma-es with active default stopping conditions, another optimizer for cma-es with inactive default stopping conditions, an optimizer that applies random search, and an optimizer for the genetic algorithm (GA). For parallelization, the corresponding benchmarking function bbob_custom_parallel can be applied. The results of these experiments can be read and interpreted by the functions readOutput, aggregateResults.
 License: No license
 Depends:
-    snow,
-    parallel,
     BBmisc,
     smoof,
     ggplot2
+Import:
+    snow,
+    parallel,
 ByteCompile: yes
 RoxygenNote: 5.0.1
