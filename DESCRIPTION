@@ -12,6 +12,6 @@ Depends:
     parallel,
     BBmisc,
     smoof,
-    ggplot2 
+    ggplot2
 ByteCompile: yes
 RoxygenNote: 5.0.1

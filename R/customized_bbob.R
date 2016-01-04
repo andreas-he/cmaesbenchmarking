@@ -432,15 +432,15 @@ bbob_custom_parallel = function(optimizer, algorithm_id, data_directory, dimensi
                                 maxFE = NULL, debug.logging = FALSE, max_restarts = 0, 
                                 restart_multiplier = 1, restart_triggers = character(0), OCD = FALSE, varLimit = NULL,
                                 nPreGen = NULL, maxGen = NULL, fitnessValue = FALSE, dispersion = FALSE, evolutionPath = FALSE) {
-  nCores = detectCores()
-  cluster = snow:::makeCluster(nCores, type = "SOCK")
+  nCores = parallel::detectCores()
+  cluster = snow::makeCluster(nCores, type = "SOCK")
   #export relevant libraries + functions to the clusters
-  snow:::clusterCall(cluster, function() require(cmaesr))
-  snow:::clusterCall(cluster, function() require(bbob))
+  snow::clusterCall(cluster, function() require(cmaesr))
+  snow::clusterCall(cluster, function() require(bbob))
   #export all environment functions
   ex = Filter(function(x) is.function(get(x, .GlobalEnv)), ls(.GlobalEnv))
-  snow:::clusterExport(cluster, ex)
-  snow:::clusterApply(cl = cluster, x = function_ids, fun = function(x) bbob_custom(optimizer = optimizer, 
+  snow::clusterExport(cluster, ex)
+  snow::clusterApply(cl = cluster, x = function_ids, fun = function(x) bbob_custom(optimizer = optimizer, 
                                                                   algorithm_id = algorithm_id, 
                                                                   data_directory = data_directory, 
                                                                   dimensions = dimensions,
@@ -460,5 +460,5 @@ bbob_custom_parallel = function(optimizer, algorithm_id, data_directory, dimensi
                                                                   fitnessValue = fitnessValue,
                                                                   dispersion = dispersion, 
                                                                   evolutionPath = evolutionPath))
-  snow:::stopCluster(cluster)
+  snow::stopCluster(cluster)
 }
