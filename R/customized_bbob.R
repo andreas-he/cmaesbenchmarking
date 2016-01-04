@@ -276,6 +276,7 @@ optimizerCMAES = function(dimension, instance, function_id, maxit, maxFE, stopFi
 }
 
 #' @rdname bbo_benchmarking_optimizers
+#' @export
 #reduced optimizer that does not apply default stopping conditions
 #purely for showcasing purposes for the presentation, should never be used in practise
 optimizerCMAESWithoutDef = function(dimension, instance, function_id, maxit, maxFE, stopFitness, path, 
@@ -344,6 +345,7 @@ optimizerCMAESWithoutDef = function(dimension, instance, function_id, maxit, max
 }
 
 #' @rdname bbo_benchmarking_optimizers
+#' @export
 optimizerRS = function(dimension, instance, function_id, maxit, maxFE, stopFitness, path, OCD = FALSE,
                        debug.logging = FALSE, max_restarts = 0, 
                        restart_multiplier = 1, restart_triggers = character(0), ...) {
@@ -354,6 +356,7 @@ optimizerRS = function(dimension, instance, function_id, maxit, maxFE, stopFitne
 }
 
 #' @rdname bbo_benchmarking_optimizers
+#' @export
 optimizerGA = function(dimension, instance, function_id, maxit, maxFE, stopFitness, path, 
                        debug.logging = FALSE, max_restarts, restart_multiplier, restart_triggers, OCD = FALSE,
                        varLimit = NULL, nPreGen = NULL, maxGen = NULL, fitnessValue= FALSE, dispersion = FALSE,
