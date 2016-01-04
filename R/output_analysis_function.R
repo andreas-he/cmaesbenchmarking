@@ -20,8 +20,12 @@
 # no export as it is not recommended to use this function separately.
 createOutputImages = function(outputPath) {
   dir.create(outputPath, showWarnings = FALSE)
-  #if (!"ggplot2" %in% rownames(installed.packages())) install.packages("ggplot2")
-  #if (!"BBMisc" %in% rownames(installed.packages())) install.packages("BBMisc")
+  if (!"parallel" %in% rownames(installed.packages())) install.packages("parallel")
+  if (!"BBMisc" %in% rownames(installed.packages())) install.packages("BBMisc")
+  if (!"snow" %in% rownames(installed.packages())) install.packages("snow")
+  require(BBmisc)
+  require(parallel)
+  require(snow)
   #require(ggplot2)
   #require(BBMisc)
   #source necessary functions
@@ -120,10 +124,6 @@ createOutputImages = function(outputPath) {
           * (CMAES_only_default_aggResult$aggregatedAllRunsEval / CMAES_only_default_aggResult$aggregatedAllRuns),
           ylab = "Stagnation length", cex.lab = 4, cex = 5, cex.axis = 4, pch = 16)
   dev.off()
-  
-  
-  plot(ecdf(CMAES_only_default_aggResult$aggregatedAllStagnation))
-  hist(log(CMAES_only_default_aggResult$aggregatedAllStagnation))
   
   
   #plots to show that multiple restarts might result in better solutions
